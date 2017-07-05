@@ -45,7 +45,7 @@ void rotate(std::string& password)
 }
 
 //Changes password length by repeating from start.
-void changeLength(unsigned int& length, std::string& input)
+void changeLength(int& length, std::string& input)
 {
 	if (length < input.size())
 	{
@@ -66,24 +66,31 @@ void changeLength(unsigned int& length, std::string& input)
 int main()
 {
 	std::string input, length;
-	unsigned int digits;
+	int digits = 0;
 
 	std::cout << "Enter you password : ";
 	std::getline(std::cin, input);
 
-	std::cout << "Enter desired password length : ";
+	std::cout << "Enter desired password length (ENTER means unchanged) : ";
 	std::getline(std::cin, length);
 
 	//Try catch statement to check whether input is appropriate or out of bounds.
 	try {
-	
-		digits = std::stoi(length);
-		if (digits < 1)
+		//Checks whether input for size exists.
+		if (length.size() > 0)
+		{
+			digits = std::stoi(length);
+		}
+		//Checks for negative number inputs.
+		if (digits < 0)
 		{
 			throw "Out of Bounds";
 		}
-
-		changeLength(digits, input);
+		//If password length is greater than 0, change its length, else keep it the same.
+		if (digits > 0)
+		{
+			changeLength(digits, input);
+		}
 		rotate(input);
 
 	} catch (char const* e) {
@@ -93,7 +100,7 @@ int main()
 
 	} catch (...) {
 		//Catches remaining exceptions and ends program.
-		std::cout << "An exception occurred..." << std::endl;
+		std::cout << "Invalid inputs..." << std::endl;
 		input = "N/A";
 
 	}
